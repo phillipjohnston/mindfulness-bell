@@ -1,0 +1,7 @@
+# Mindfulness Bell Configuration
+
+# Interval between bells in seconds (default: 1200 = 20 minutes)
+INTERVAL=1200
+
+# Path to audio file (relative to script directory or absolute path)
+AUDIO_FILE="${SCRIPT_DIR}/audio/medium_bell_wake_plus_full.mp3"

@@ -1,0 +1,10 @@
+# Log files
+bell.log
+bell-stdout.log
+bell-stderr.log
+
+# State files
+.bell-paused
+
+# macOS
+.DS_Store
