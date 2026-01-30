@@ -50,7 +50,15 @@ Edit `.bell-config` to customize:
   - When enabled, the bell won't play during active Zoom meetings
   - Set to false if you want the bell to play even during meetings
 
-After changing configuration, restart the service (see Management section below).
+After changing configuration, restart the service:
+```bash
+./restart.sh
+```
+
+Or manually:
+```bash
+launchctl kickstart -k gui/$(id -u)/com.embeddedartistry.mindfulness-bell
+```
 
 ## Usage
 
@@ -105,9 +113,21 @@ launchctl load ~/Library/LaunchAgents/com.embeddedartistry.mindfulness-bell.plis
 
 ### Restart the service
 
-After changing configuration:
+After changing configuration, use the restart script:
 
 ```bash
+./restart.sh
+```
+
+This uses `launchctl kickstart -k` to force a clean restart and kill any old processes.
+
+Alternatively, you can manually restart:
+
+```bash
+# Recommended: kickstart (forces clean restart)
+launchctl kickstart -k gui/$(id -u)/com.embeddedartistry.mindfulness-bell
+
+# Or: manual unload/load (may leave old process running)
 launchctl unload ~/Library/LaunchAgents/com.embeddedartistry.mindfulness-bell.plist
 launchctl load ~/Library/LaunchAgents/com.embeddedartistry.mindfulness-bell.plist
 ```
