@@ -10,3 +10,7 @@ AUDIO_FILE="${SCRIPT_DIR}/audio/medium_bell_wake_plus_full.mp3"
 # Example: 60 means play at 60% of whatever the current system volume is
 # Set to 100 to match current system volume, or leave unset to use system volume
 RELATIVE_VOLUME=60
+
+# Auto-mute bell during Zoom meetings (true/false)
+# When enabled, bell will be skipped when an active Zoom meeting is detected
+AUTO_MUTE_ZOOM=true

@@ -7,7 +7,8 @@ An automated mindfulness bell that plays at regular intervals to help maintain a
 - Plays a bell sound at configurable intervals (default: 20 minutes)
 - Runs automatically in the background on macOS
 - Pause the bell temporarily with a simple command
-- Configurable audio file and interval settings
+- Automatically skips bell during Zoom meetings
+- Configurable audio file, interval, and volume settings
 
 ## Setup
 
@@ -45,6 +46,9 @@ Edit `.bell-config` to customize:
 - `RELATIVE_VOLUME`: Percentage of current system volume (0-100, default: 100)
   - Example: 60 means play at 60% of whatever your current system volume is
   - Useful for making the bell quieter than your music/videos without changing system volume
+- `AUTO_MUTE_ZOOM`: Automatically skip bell during Zoom meetings (true/false, default: true)
+  - When enabled, the bell won't play during active Zoom meetings
+  - Set to false if you want the bell to play even during meetings
 
 After changing configuration, restart the service (see Management section below).
 
@@ -167,6 +171,20 @@ The bell plays at a percentage of your current system volume (controlled by `REL
 - The bell volume automatically adjusts when you change your system volume
 
 Don't forget to restart the service after changing the configuration.
+
+### Bell not skipping during Zoom meetings
+
+If the bell plays during Zoom meetings when you expected it to be skipped:
+
+1. Check that `AUTO_MUTE_ZOOM=true` in `.bell-config`
+2. Verify you're in an active meeting (not just Zoom open)
+3. Check the logs to see if meeting detection is working:
+   ```bash
+   tail -f bell.log
+   ```
+   You should see "Zoom meeting detected" messages during meetings
+
+If you want the bell to play even during meetings, set `AUTO_MUTE_ZOOM=false` in `.bell-config`.
 
 ## Customization
 

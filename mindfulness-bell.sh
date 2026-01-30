@@ -21,6 +21,7 @@ load_config() {
     INTERVAL=${INTERVAL:-1200}  # Default: 20 minutes (1200 seconds)
     AUDIO_FILE=${AUDIO_FILE:-"${SCRIPT_DIR}/audio/medium_bell_wake_plus_full.mp3"}
     RELATIVE_VOLUME=${RELATIVE_VOLUME:-100}  # Default: 100% of system volume
+    AUTO_MUTE_ZOOM=${AUTO_MUTE_ZOOM:-true}  # Default: enabled
 }
 
 # Log messages
@@ -47,6 +48,20 @@ is_paused() {
     return 1  # Not paused
 }
 
+# Check if in a Zoom meeting
+is_in_meeting() {
+    if [ "$AUTO_MUTE_ZOOM" != "true" ]; then
+        return 1  # Feature disabled, not in meeting
+    fi
+
+    # Check for Zoom's CptHost process (meeting component)
+    if pgrep -q CptHost; then
+        return 0  # In meeting
+    fi
+
+    return 1  # Not in meeting
+}
+
 # Play the bell sound
 play_bell() {
     if [ ! -f "$AUDIO_FILE" ]; then
@@ -71,11 +86,15 @@ play_bell() {
 # Main loop
 main() {
     load_config
-    log "Mindfulness bell started (interval: ${INTERVAL}s, audio: $AUDIO_FILE, relative volume: ${RELATIVE_VOLUME}%)"
+    log "Mindfulness bell started (interval: ${INTERVAL}s, audio: $AUDIO_FILE, relative volume: ${RELATIVE_VOLUME}%, auto-mute Zoom: ${AUTO_MUTE_ZOOM})"
 
     while true; do
         if ! is_paused; then
-            play_bell
+            if ! is_in_meeting; then
+                play_bell
+            else
+                log "Bell skipped (Zoom meeting detected)"
+            fi
         else
             PAUSE_UNTIL=$(cat "$PAUSE_FILE")
             REMAINING=$((PAUSE_UNTIL - $(date +%s)))
