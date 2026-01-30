@@ -5,3 +5,8 @@ INTERVAL=1200
 
 # Path to audio file (relative to script directory or absolute path)
 AUDIO_FILE="${SCRIPT_DIR}/audio/medium_bell_wake_plus_full.mp3"
+
+# Relative volume (percentage of current system volume, 0-100)
+# Example: 60 means play at 60% of whatever the current system volume is
+# Set to 100 to match current system volume, or leave unset to use system volume
+RELATIVE_VOLUME=60

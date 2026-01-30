@@ -42,6 +42,9 @@ Edit `.bell-config` to customize:
 
 - `INTERVAL`: Time between bells in seconds (default: 1200 = 20 minutes)
 - `AUDIO_FILE`: Path to your preferred audio file
+- `RELATIVE_VOLUME`: Percentage of current system volume (0-100, default: 100)
+  - Example: 60 means play at 60% of whatever your current system volume is
+  - Useful for making the bell quieter than your music/videos without changing system volume
 
 After changing configuration, restart the service (see Management section below).
 
@@ -155,9 +158,15 @@ bell status
    ls -l audio/medium_bell_wake_plus_full.mp3
    ```
 
-### Bell playing too quietly
+### Bell playing too quietly or too loudly
 
-The bell uses macOS's `afplay` command, which respects your system volume. Ensure your volume is at an appropriate level.
+The bell plays at a percentage of your current system volume (controlled by `RELATIVE_VOLUME` in `.bell-config`):
+
+- To make the bell quieter: Set `RELATIVE_VOLUME` to a lower value (e.g., 60 for 60% of system volume)
+- To make the bell louder: Set `RELATIVE_VOLUME` to a higher value (e.g., 100 to match system volume)
+- The bell volume automatically adjusts when you change your system volume
+
+Don't forget to restart the service after changing the configuration.
 
 ## Customization
 
@@ -176,3 +185,14 @@ The bell uses macOS's `afplay` command, which respects your system volume. Ensur
    - 30 minutes: 1800
    - 1 hour: 3600
 2. Restart the service
+
+### Adjusting the volume
+
+1. Edit `.bell-config` and update `RELATIVE_VOLUME` (percentage of system volume)
+   - Very quiet: 30
+   - Quiet: 50
+   - Medium: 60-70
+   - Normal: 100 (matches system volume)
+2. Restart the service
+
+The bell will play at this percentage of whatever your current system volume is, so it automatically adjusts when you change your system volume.
